@@ -16,7 +16,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/txtName"
+            android:id="@+id/dogBreed"
             style="@style/Title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -25,14 +25,14 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/description"
+            android:id="@+id/dogLifespan"
             style="@style/Description"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/imageView"
-            app:layout_constraintTop_toBottomOf="@id/txtName" />
+            app:layout_constraintTop_toBottomOf="@id/dogBreed" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
