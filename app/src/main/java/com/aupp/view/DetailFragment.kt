@@ -5,11 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.Navigation
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.aupp.R
+import com.aupp.viewmodel.DetailViewModel
 import kotlinx.android.synthetic.main.fragment_detail.*
 
 class DetailFragment : Fragment() {
+
+    lateinit var viewModel: DetailViewModel
 
     private var uid = "0"
 
@@ -23,9 +27,24 @@ class DetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel = ViewModelProviders.of(this).get(DetailViewModel::class.java)
+
+        viewModel.getDog()
+
         arguments?.let {
             uid = DetailFragmentArgs.fromBundle(it).id
         }
+        observeViewModel()
+    }
 
+    private fun observeViewModel() {
+        viewModel.dog.observe(viewLifecycleOwner, Observer { dog ->
+            dog?.let {
+                dogBreed.text = dog.dogBreed
+                txtTemperament.text = dog.temperament
+                txtLifespan.text = dog.lifeSpan
+                txtPurpose.text = dog.breedFor
+            }
+        })
     }
 }

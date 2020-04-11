@@ -3,6 +3,7 @@ package com.aupp.view
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.aupp.R
 import com.aupp.model.DogBreed
@@ -29,6 +30,10 @@ class DogsListAdapter(val dogsList: ArrayList<DogBreed>) : RecyclerView.Adapter<
         with(holder.view) {
             dogBreed.text = dog.dogBreed
             dogLifespan.text = dog.lifeSpan
+
+            setOnClickListener {
+                Navigation.findNavController(it).navigate(ListFragmentDirections.actionDetailFragment())
+            }
         }
     }
 
