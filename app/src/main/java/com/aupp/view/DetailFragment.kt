@@ -25,13 +25,7 @@ class DetailFragment : Fragment() {
 
         arguments?.let {
             uid = DetailFragmentArgs.fromBundle(it).id
-            idPassed.text = uid
         }
 
-        buttonList.setOnClickListener {
-            val action = DetailFragmentDirections.actionListFragment()
-            Navigation.findNavController(it)
-                .navigate(action)
-        }
     }
 }
