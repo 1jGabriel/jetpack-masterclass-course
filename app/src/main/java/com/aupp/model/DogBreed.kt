@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName
 data class DogBreed(
     @ColumnInfo(name = "breed_id")
     @SerializedName("id")
-    val breedId: String?,
+    val breedId: Int?,
     @ColumnInfo(name = "dog_name")
     @SerializedName("name")
     val dogBreed: String?,
