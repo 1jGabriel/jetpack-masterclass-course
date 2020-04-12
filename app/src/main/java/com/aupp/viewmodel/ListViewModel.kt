@@ -3,7 +3,6 @@ package com.aupp.viewmodel
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.aupp.model.DogBreed
-import com.aupp.model.DogDatabase
 import com.aupp.model.DogsApiService
 import com.aupp.util.SharedPreferencesHelper
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -35,7 +34,7 @@ class ListViewModel(application: Application) : BaseViewModel(application) {
     private fun fetchFromDataBase() {
         loading.value = true
         launch {
-            val dogs = dogDatabase().dogDao().getAllDogs()
+            val dogs = dogDao().getAllDogs()
             onDogsSuccess(dogs)
             loading.value = false
         }
@@ -64,9 +63,9 @@ class ListViewModel(application: Application) : BaseViewModel(application) {
 
     private fun storeDogsLocally(list: List<DogBreed>) {
         launch {
-            dogDatabase().dogDao().deleteAllDogs()
+            dogDao().deleteAllDogs()
 
-            val result = dogDatabase().dogDao().insertAll(*list.toTypedArray())
+            val result = dogDao().insertAll(*list.toTypedArray())
 
             var i = 0
             while (i < list.size) {
@@ -78,8 +77,6 @@ class ListViewModel(application: Application) : BaseViewModel(application) {
 
         preferencesHelper.saveUpdateTime(System.nanoTime())
     }
-
-    private fun dogDatabase() = DogDatabase(getApplication())
 
     override fun onCleared() {
         super.onCleared()

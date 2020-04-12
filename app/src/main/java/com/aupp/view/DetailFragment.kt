@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.aupp.R
+import com.aupp.util.extensions.loadImage
 import com.aupp.viewmodel.DetailViewModel
 import kotlinx.android.synthetic.main.fragment_detail.*
 
@@ -15,7 +16,7 @@ class DetailFragment : Fragment() {
 
     lateinit var viewModel: DetailViewModel
 
-    private var uid = "0"
+    private var uid = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,17 +30,17 @@ class DetailFragment : Fragment() {
 
         viewModel = ViewModelProviders.of(this).get(DetailViewModel::class.java)
 
-        viewModel.getDog()
-
         arguments?.let {
-            uid = DetailFragmentArgs.fromBundle(it).id
+            uid = DetailFragmentArgs.fromBundle(it).uuid
         }
+        viewModel.getDog(uid)
         observeViewModel()
     }
 
     private fun observeViewModel() {
         viewModel.dog.observe(viewLifecycleOwner, Observer { dog ->
             dog?.let {
+                image.loadImage(dog.imageUrl)
                 dogBreed.text = dog.dogBreed
                 txtTemperament.text = dog.temperament
                 txtLifespan.text = dog.lifeSpan
