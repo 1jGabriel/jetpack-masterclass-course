@@ -1,10 +1,12 @@
 package com.aupp.util.extensions
 
 import android.widget.ImageView
+import androidx.databinding.BindingAdapter
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.aupp.R
 import com.bumptech.glide.Glide
 
+@BindingAdapter("android:imageUrl")
 fun ImageView.loadImage(url: String?) {
 
     val circularProgressDrawable = CircularProgressDrawable(context).apply {
