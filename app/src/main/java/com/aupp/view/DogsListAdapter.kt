@@ -1,14 +1,12 @@
 package com.aupp.view
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.Navigation
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.aupp.R
+import com.aupp.databinding.ItemListBinding
 import com.aupp.model.DogBreed
-import com.aupp.util.extensions.loadImage
-import kotlinx.android.synthetic.main.item_list.view.*
 
 class DogsListAdapter(val dogsList: ArrayList<DogBreed>) : RecyclerView.Adapter<DogsListAdapter.DogViewHolder>() {
 
@@ -19,27 +17,28 @@ class DogsListAdapter(val dogsList: ArrayList<DogBreed>) : RecyclerView.Adapter<
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DogViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_list, parent, false)
-
+        val inflater = LayoutInflater.from(parent.context)
+        val view = DataBindingUtil.inflate<ItemListBinding>(inflater, R.layout.item_list, parent, false)
         return DogViewHolder(view)
     }
 
     override fun getItemCount() = dogsList.size
 
     override fun onBindViewHolder(holder: DogViewHolder, position: Int) {
-        val dog = dogsList[position]
-        with(holder.view) {
-            dogBreed.text = dog.dogBreed
-            dogLifespan.text = dog.lifeSpan
-            imageView.loadImage(dog.imageUrl)
-
-            setOnClickListener {
-                val action = ListFragmentDirections.actionDetailFragment()
-                action.uuid = dog.uuid
-                Navigation.findNavController(it).navigate(action)
-            }
-        }
+        holder.view.dog = dogsList[position]
+        // val dog = dogsList[position]
+        // with(holder.view) {
+        //     dogBreed.text = dog.dogBreed
+        //     dogLifespan.text = dog.lifeSpan
+        //     imageView.loadImage(dog.imageUrl)
+        //
+        //     setOnClickListener {
+        //         val action = ListFragmentDirections.actionDetailFragment()
+        //         action.uuid = dog.uuid
+        //         Navigation.findNavController(it).navigate(action)
+        //     }
+        // }
     }
 
-    class DogViewHolder(var view: View) : RecyclerView.ViewHolder(view)
+    class DogViewHolder(var view: ItemListBinding) : RecyclerView.ViewHolder(view.root)
 }
