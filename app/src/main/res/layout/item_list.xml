@@ -7,11 +7,16 @@
         <variable
             name="dog"
             type="com.aupp.model.DogBreed" />
+
+        <variable
+            name="clickListener"
+            type="com.aupp.view.DogClickListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:onClick="@{(v) -> clickListener.onDogClicked(dog, v)}">
 
         <ImageView
             android:id="@+id/imageView"
