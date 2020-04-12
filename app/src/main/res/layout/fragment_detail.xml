@@ -8,20 +8,25 @@
         <variable
             name="dog"
             type="com.aupp.model.DogBreed" />
+
+        <variable
+            name="palette"
+            type="com.aupp.model.DogPalette" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@{palette.color}"
         tools:context=".view.DetailFragment">
 
         <ImageView
             android:id="@+id/image"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:imageUrl="@{dog.imageUrl}"
             android:minHeight="200dp"
             android:scaleType="fitCenter"
-            android:imageUrl="@{dog.imageUrl}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -64,8 +69,8 @@
             style="@style/Description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{dog.lifeSpan}"
             android:layout_margin="4dp"
+            android:text="@{dog.lifeSpan}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/txtTemperament" />
