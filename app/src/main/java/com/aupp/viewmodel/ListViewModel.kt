@@ -1,14 +1,16 @@
 package com.aupp.viewmodel
 
+import android.app.Application
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.aupp.model.DogBreed
+import com.aupp.model.DogDatabase
 import com.aupp.model.DogsApiService
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.launch
 
-class ListViewModel : ViewModel() {
+class ListViewModel(application: Application) : BaseViewModel(application) {
     private val dogsService = DogsApiService()
     private val disposable = CompositeDisposable()
     val dogs = MutableLiveData<List<DogBreed>>()
@@ -27,12 +29,33 @@ class ListViewModel : ViewModel() {
                 .doOnSubscribe { loading.value = true }
                 .doFinally { loading.value = false }
                 .subscribe({
-                    dogs.value = it
+                    onDogsSuccess(it)
                 }, {
                     dogsLoadError.value = true
                 })
         )
     }
+
+    private fun onDogsSuccess(dogs: List<DogBreed>?) {
+        this.dogs.value = dogs
+    }
+
+    private fun storeDogsLocally(list: List<DogBreed>) {
+        launch {
+            dogDatabase().dogDao().deleteAllDogs()
+
+            val result = dogDatabase().dogDao().insertAll(*list.toTypedArray())
+
+            var i = 0
+            while (i < list.size) {
+                list[i].uuid = result[i].toInt()
+                ++i
+            }
+            onDogsSuccess(list)
+        }
+    }
+
+    private fun dogDatabase() = DogDatabase(getApplication())
 
     override fun onCleared() {
         super.onCleared()
