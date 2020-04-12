@@ -1,4 +1,4 @@
-package com.aupp.extensions
+package com.aupp.util.extensions
 
 import android.widget.ImageView
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable

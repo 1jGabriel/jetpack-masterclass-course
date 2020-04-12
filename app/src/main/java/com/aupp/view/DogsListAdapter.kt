@@ -6,8 +6,8 @@ import android.view.ViewGroup
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.aupp.R
-import com.aupp.extensions.loadImage
 import com.aupp.model.DogBreed
+import com.aupp.util.extensions.loadImage
 import kotlinx.android.synthetic.main.item_list.view.*
 
 class DogsListAdapter(val dogsList: ArrayList<DogBreed>) : RecyclerView.Adapter<DogsListAdapter.DogViewHolder>() {

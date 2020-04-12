@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.aupp.model.DogBreed
 import com.aupp.model.DogDatabase
 import com.aupp.model.DogsApiService
+import com.aupp.util.SharedPreferencesHelper
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -13,6 +14,7 @@ import kotlinx.coroutines.launch
 class ListViewModel(application: Application) : BaseViewModel(application) {
     private val dogsService = DogsApiService()
     private val disposable = CompositeDisposable()
+    private var preferencesHelper = SharedPreferencesHelper(getApplication())
     val dogs = MutableLiveData<List<DogBreed>>()
     val dogsLoadError = MutableLiveData<Boolean>()
     val loading = MutableLiveData<Boolean>()
@@ -29,7 +31,7 @@ class ListViewModel(application: Application) : BaseViewModel(application) {
                 .doOnSubscribe { loading.value = true }
                 .doFinally { loading.value = false }
                 .subscribe({
-                    onDogsSuccess(it)
+                    storeDogsLocally(it)
                 }, {
                     dogsLoadError.value = true
                 })
@@ -53,6 +55,8 @@ class ListViewModel(application: Application) : BaseViewModel(application) {
             }
             onDogsSuccess(list)
         }
+
+        preferencesHelper.saveUpdateTime(System.nanoTime())
     }
 
     private fun dogDatabase() = DogDatabase(getApplication())
