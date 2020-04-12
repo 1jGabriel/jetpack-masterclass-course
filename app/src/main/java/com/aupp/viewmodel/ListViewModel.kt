@@ -15,13 +15,33 @@ class ListViewModel(application: Application) : BaseViewModel(application) {
     private val dogsService = DogsApiService()
     private val disposable = CompositeDisposable()
     private var preferencesHelper = SharedPreferencesHelper(getApplication())
+    private var refreshTime = 5 * 60 * 1000 * 1000 * 1000L //5 minutes in nanosecods
     val dogs = MutableLiveData<List<DogBreed>>()
     val dogsLoadError = MutableLiveData<Boolean>()
-    val loading = MutableLiveData<Boolean>()
 
     fun refresh() {
+        val updateTime = preferencesHelper.getUpdateTime()
+        if (updateTime != null && updateTime != 0L && System.nanoTime() - updateTime < refreshTime) {
+            fetchFromDataBase()
+        } else {
+            fetchFromRemote()
+        }
+    }
+
+    fun refreshBypassCache() {
         fetchFromRemote()
     }
+
+    private fun fetchFromDataBase() {
+        loading.value = true
+        launch {
+            val dogs = dogDatabase().dogDao().getAllDogs()
+            onDogsSuccess(dogs)
+            loading.value = false
+        }
+    }
+
+    val loading = MutableLiveData<Boolean>()
 
     private fun fetchFromRemote() {
         disposable.add(

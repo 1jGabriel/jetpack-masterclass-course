@@ -43,7 +43,7 @@ class DetailFragment : Fragment() {
                 dogBreed.text = dog.dogBreed
                 txtTemperament.text = dog.temperament
                 txtLifespan.text = dog.lifeSpan
-                txtPurpose.text = dog.breedFor
+                txtPurpose.text = dog.bredFor
             }
         })
     }

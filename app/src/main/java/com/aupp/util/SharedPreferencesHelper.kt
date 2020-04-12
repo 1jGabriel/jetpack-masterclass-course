@@ -34,4 +34,6 @@ class SharedPreferencesHelper {
             putLong(PREF_TIME, time)
         }
     }
+
+    fun getUpdateTime() = sharedPreferences?.getLong(PREF_TIME, 0)
 }
