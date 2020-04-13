@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.aupp.model.DogBreed
 import com.aupp.model.DogsApiService
+import com.aupp.util.NotificationsHelper
 import com.aupp.util.SharedPreferencesHelper
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -50,6 +51,7 @@ class ListViewModel(application: Application) : BaseViewModel(application) {
                 .doOnSubscribe { loading.value = true }
                 .doFinally { loading.value = false }
                 .subscribe({
+                    NotificationsHelper(getApplication()).createNotification()
                     storeDogsLocally(it)
                 }, {
                     dogsLoadError.value = true
