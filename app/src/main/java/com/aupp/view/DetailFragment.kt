@@ -44,6 +44,7 @@ class DetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        setHasOptionsMenu(true)
         dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_detail, container, false)
         return dataBinding.root
     }
