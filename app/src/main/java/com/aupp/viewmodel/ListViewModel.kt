@@ -20,6 +20,7 @@ class ListViewModel(application: Application) : BaseViewModel(application) {
     val dogsLoadError = MutableLiveData<Boolean>()
 
     fun refresh() {
+        checkCacheDuration()
         val updateTime = preferencesHelper.getUpdateTime()
         if (updateTime != null && updateTime != 0L && System.nanoTime() - updateTime < refreshTime) {
             fetchFromDataBase()
@@ -57,6 +58,17 @@ class ListViewModel(application: Application) : BaseViewModel(application) {
                     dogsLoadError.value = true
                 })
         )
+    }
+
+    private fun checkCacheDuration() {
+        val cachePreference = preferencesHelper.getCacheDuration()
+
+        try {
+            val cachePreferenceInt = cachePreference?.toInt() ?: 5 * 60
+            refreshTime = cachePreferenceInt.times(1000 * 1000 * 1000L)
+        } catch (e: NumberFormatException) {
+            e.printStackTrace()
+        }
     }
 
     private fun onDogsSuccess(dogs: List<DogBreed>?) {
